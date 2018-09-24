@@ -6,12 +6,12 @@ Login Feature:
   - Recover Password
 
 Listing Feature:
-  - View listing catalog
+  - View listing catalog [IN PROCESS by Dylan]
   - Search catalog by tag(s)
   - View details of specific listing from catalog
-  - Add listing [IN PROCESS by Dylan]
+  - Add listing [DONE by Dylan]
   - Admin remove listing [IN PROCESS by Brandon]
-  - "Upvot" Listing
+  - "Upvote" Listing
   - "Downvote" listing
 
 Tag Feature:
