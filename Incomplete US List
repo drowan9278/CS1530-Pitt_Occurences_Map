@@ -15,7 +15,7 @@ Listing Feature:
   - "Downvote" listing
 
 Tag Feature:
-  - View dictionary of tags
+  - View dictionary of tags [In Progress by Adam]
   - Add tag to listing
   - Admin add to dictionary of tags         //These two could probably be written as
   - Admin remove from dictionary of tags    //one UC with a sub branch in the normal flow.
