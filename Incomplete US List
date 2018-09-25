@@ -3,7 +3,7 @@ Incomplete List of Use Cases
 Login Feature:
   - Create Profile [DONE by Dylan]
   - Login to Profile [DONE by Dylan]
-  - Recover Password [David-IP]
+  - Recover Password [DONE by David]
 
 Listing Feature:
   - View listing catalog 
@@ -16,7 +16,7 @@ Listing Feature:
 
 Tag Feature:
   - View dictionary of tags [In Progress by Adam]
-  - Add tag to listing [David-IP]
+  - Add tag to listing [DONE by David]
   - Admin add to dictionary of tags         //These two could probably be written as
   - Admin remove from dictionary of tags    //one UC with a sub branch in the normal flow.
   - User request new tag
