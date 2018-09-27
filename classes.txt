@@ -1,0 +1,10 @@
+Classes
+ Landing Page HTML
+-Entity Class for DB access
+Controller Class
+	-Controller Maps
+	-Controller Login
+Data Models
+	-Models map data
+	-Login data
+	-Admin data
