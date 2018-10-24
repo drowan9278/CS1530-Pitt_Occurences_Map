@@ -13,23 +13,22 @@ namespace _1530Application
         public DbConnection()
         {
             dbConnection = new SqlConnection("user id=admin;" +
-                                       "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com,1433;" +
+                                       "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
                                        "Trusted_Connection=yes;" +
                                        "database=OitDb; " +
                                        "connection timeout=30");
             try
             {
                 dbConnection.Open();
+                Console.WriteLine("Connected to Datebase: " + dbConnection.ConnectionString);
             }
             catch(Exception e)
             {
                 Console.WriteLine("SqlConnection Failed Exception" + e.Message);
             }
+            
         }
-        ~DbConnection()
-        {
-            Console.WriteLine("Closing Sql Connection");
-            dbConnection.Close();
-        }
+       
     }
+    
 }
