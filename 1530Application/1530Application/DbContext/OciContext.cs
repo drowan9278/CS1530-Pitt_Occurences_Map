@@ -9,12 +9,12 @@ namespace _1530Application
 {
     public class DbConnection
     {
-        SqlConnection dbConnection;
+        public SqlConnection dbConnection;
         public DbConnection()
         {
             dbConnection = new SqlConnection("user id=admin;" +
                                        "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
-                                       "Trusted_Connection=yes;" +
+                                       "Trusted_Connection=no;" +
                                        "database=OitDb; " +
                                        "connection timeout=30");
             try
