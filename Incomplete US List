@@ -1,0 +1,30 @@
+Incomplete List of Use Cases
+
+Login Feature:
+  - Create Profile [DONE by Dylan]
+  - Login to Profile [DONE by Dylan]
+  - Recover Password [DONE by David]
+
+Listing Feature:
+  - View listing catalog 
+  - Search catalog by tag(s) [IN PROCESS by Dylan]
+  - View details of specific listing from catalog
+  - Add listing [DONE by Dylan]
+  - Admin remove listing [DONE by Brandon]
+  - "Upvote" Listing [Done by David]
+  - "Downvote" listing [Done by David]
+
+Tag Feature:
+  - View dictionary of tags [In Progress by Adam]
+  - Add tag to listing [DONE by David]
+  - Admin add to dictionary of tags         //These two could probably be written as
+  - Admin remove from dictionary of tags    //one UC with a sub branch in the normal flow.
+  - User request new tag
+  - Select tags to recieve updates regarding
+ 
+Map Feature:
+  - View map of listings
+  - View details of specific listing from map [In progress by Adam]
+  - Search map by tag(s) [DONE by Brandon]
+  
+  

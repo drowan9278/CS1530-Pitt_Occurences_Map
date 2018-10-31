@@ -1,0 +1,46 @@
+Approximate Feature Set
+
+Version: 1
+Created By: Dylan Sporrer
+Created On: 9/16/2018
+Last Updated By: Dylan Sporrer
+Last Updated On: 9/16/2018
+
+1. User Profile
+  1.1 Email + Password combo validation
+  1.2 Access to inconvenience listing system
+  1.3 History of profile's uploaded listings
+  1.4 Access to tags system
+2. Inconvenience Listing System
+  2.1 Listing can be added by any valid profile
+  2.2 Listing Includes:
+    - Time of posting
+    - Time of most recent update to counts
+    - Location
+    - Affected tags
+    - Type + Optional detailed description
+    - Optional image
+    - "Corroborated" count
+    - "Solved" count
+  2.3 Listing catalog can be viewed by any user
+  2.4 Listing can be marked solved by any valid profile
+  2.5 Listing can be marked corroborated by any valid profile
+  2.6 Any listing falling below given age/solved/corroborated threshold is automatically removed from system
+  2.7 Administrative users can remove any listing from system
+3. Tags System
+  3.1 Valid tags are assigned to listing at time of posting
+  3.2 Listing catalog/map can be searched using any combination of valid tags e.g.
+    - Streets affected
+    - Campus buildings affected
+    - Classes affected
+    - Campus events affected
+  3.3 Valid profiles can recieve updates about specified tags i.e.
+    - Be alerted to new listings with given tags
+    - Be alerted to the removal of listings with given tags
+  3.4 Dictionary of valid tags can be viewed by any valid profile
+  3.5 Dictionary of valid tags can be altered by administrative profile
+4. Inconvenience Live Map
+  4.1 Map displays locations of all listings overlayed on existing map application
+  4.2 Listing icons can be selected to see their details by any user
+  4.3 Listings are automatically added/removed from map as they are added/removed from catalog
+  4.4 Map can be viewed by any user
