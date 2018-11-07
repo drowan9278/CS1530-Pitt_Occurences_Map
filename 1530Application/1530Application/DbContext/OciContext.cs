@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Web;
 
 namespace _1530Application
 {
     public class DbConnection
     {
         public SqlConnection dbConnection;
+
         public DbConnection()
         {
             dbConnection = new SqlConnection("user id=admin;" +
@@ -22,7 +19,7 @@ namespace _1530Application
                 dbConnection.Open();
                 Console.WriteLine("Connected to Datebase: " + dbConnection.ConnectionString);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("SqlConnection Failed Exception" + e.Message);
             }
