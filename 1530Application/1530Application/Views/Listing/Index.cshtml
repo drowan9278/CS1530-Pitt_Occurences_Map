@@ -1,0 +1,100 @@
+<html>
+<head>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+	
+	<style type="text/css">
+		#map{ width:700px; height: 500px; }
+    </style>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+	
+	<script>
+		$(document).ready(function() {
+		$("#tagPill").select2();
+		});
+	</script>
+</head>
+<body>
+<form id = "inconForm">
+	<h3>Inconvenience Type</h3>
+	<input type="radio" id = "radBut" name="i-type" value="construction"> Construction<br>
+	<input type="radio" id = "radBut" name="i-type" value="pothole"> Crowd<br>
+	<input type="radio" id = "radBut" name="i-type" value="pothole"> Out of Order<br>
+	<input type="radio" id = "radBut" name="i-type" value="pothole"> Pothole<br>
+	<input type="radio" id = "radBut" name="i-type" value="pothole"> Special Event<br>
+	<input type="radio" id = "radBut" name="i-type" value="other"> Other
+	
+	</br>
+	<div id="map"></div>
+	<input type="text" id="lat" readonly="yes">
+	<input type="text" id="lng" readonly="yes">
+	
+	</br>
+	<h3>Affected Tags</h3>
+	<select multiple id="tagPill" style="width:300px">
+		<option value="cathy">Cathedral of Learning</option>
+		<option value="cs1501">CS1501</option>
+		<option value="cs1530">CS1530</option>
+		<option value="cs1555">CS1555</option>
+		<option value="fifth">Fifth Avenue</option>
+		<option value="forbes">Forbes Avenue</option>
+		<option value="hist0100">HIST0100</option>
+		<option value="posvar">Posvar Hall</option>
+		<option value="sennott">Sennott Square</option>
+	</select>
+	
+	</br>
+	<h3>Detailed Description</h3>
+	<textarea rows="4" cols="50" id="details"></textarea>
+	
+	</br>
+	<h3>Image Upload</h3>
+	<input type="file" accept="image/*" onchange="loadFile(event)">
+	<img id="output"/>
+	<script>
+		var loadFile = function(event) {
+			var output = document.getElementById('output');
+			output.src = URL.createObjectURL(event.target.files[0]);
+		};
+	</script>
+
+	<script>
+		function gatherInfo() {
+			var radios = document.getElementsByName('i-type');
+
+			for (var i = 0, length = radios.length; i < length; i++)
+			{
+				if (radios[i].checked)
+				{
+					var radVal = radios[i].value;
+					break;
+				}
+			}
+			
+			var latVal = document.getElementById("lat").value;
+			var lngVal = document.getElementById("lng").value;
+			
+			var tagVal = $("#tagPill").select2("val");
+			
+			var detailsVal = document.getElementById("details").value;
+			
+			var obj = {type: radVal, lat: latVal, lng: lngVal, tags: tagVal, details: detailsVal};
+			saveText(JSON.stringify(obj), "filename.json" ); 
+		}
+	</script>
+	</br></br>
+    <input type="button" onclick = "gatherInfo()" value="Sumbit Inconvenience" name="submit">
+</form>
+<script type="text/javascript" src="map.js"></script>
+
+<script>
+function saveText(text, filename){
+  var a = document.createElement('a');
+  a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(text));
+  a.setAttribute('download', filename);
+  a.click()
+}
+</script>
+</body>
+</html>
