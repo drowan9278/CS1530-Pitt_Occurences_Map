@@ -15,6 +15,39 @@
             }
 
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            addListing("test,40.441548,-79.956469,Construction Pothole,Sidewalk is closed.", map);
+        }
+
+        function addListing(listing, map) {
+            var str = listing.split(",");
+            var myLatLng = { lat: parseFloat(str[1]), lng: parseFloat(str[2]) };
+
+            var contentString = '<div id="content">' +
+                '<div id="siteNotice">' +
+                '</div>' +
+                '<h1 id="firstHeading" class="firstHeading">' + str[0] + '</h1>' +
+                '<div id="bodyContent">' +
+                '<p>' + str[3] + '</p>' +
+                '<p>' + str[4] + '</p>' +
+                '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                draggable: false,
+                title: str[0],
+                tags: str[3],
+                details: [4]
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
         }
     </script>
 
