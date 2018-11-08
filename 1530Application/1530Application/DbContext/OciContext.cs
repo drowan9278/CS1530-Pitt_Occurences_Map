@@ -115,12 +115,11 @@ namespace _1530Application
                     // do something
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-
             }
-          // return results?
-          return null;
+            // return results?
+            return null;
         }
 
         public string InsertTag(string payload)
@@ -156,12 +155,11 @@ namespace _1530Application
                     // do something
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-
             }
-          // return results?
-          return null;
+            // return results?
+            return null;
         }
     }
 }
