@@ -4,11 +4,11 @@ using System.Data.SqlClient;
 
 namespace _1530Application
 {
-    public class DbConnection
+    public class DbConnection1530
     {
         public SqlConnection dbConnection;
 
-        public DbConnection()
+        public DbConnection1530()
         {
             dbConnection = new SqlConnection("user id=admin;" +
                                        "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +

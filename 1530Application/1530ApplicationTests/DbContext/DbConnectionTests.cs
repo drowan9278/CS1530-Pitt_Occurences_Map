@@ -8,7 +8,7 @@ namespace _1530Application.Tests
         [TestMethod()]
         public void DbConnectionTest()
         {
-            DbConnection connection = new DbConnection();
+            DbConnection1530 connection = new DbConnection1530();
             Assert.IsTrue(true);
         }
 
