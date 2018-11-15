@@ -11,7 +11,7 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Driver Program to test core features of the program");
             DbConnection1530 dbcon = new DbConnection1530();
             dbcon.SearchMapListings();//Return all
             Dictionary<string, string> queryParams = new Dictionary<string, string>();
