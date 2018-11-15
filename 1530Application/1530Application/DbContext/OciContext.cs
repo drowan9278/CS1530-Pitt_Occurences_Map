@@ -9,9 +9,11 @@ namespace _1530Application
     public class DbConnection1530
     {
         public SqlConnection dbConnection;
+        private Dictionary<String, String[]> tableRestrictions; // Keep track of what each table is named and what can be queried upon
 
         public DbConnection1530()
         {
+            tableRestrictions = new Dictionary<string, string[]>();
             dbConnection = new SqlConnection("user id=admin;" +
                                        "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
                                        "Trusted_Connection=no;" +
@@ -26,10 +28,37 @@ namespace _1530Application
             {
                 Console.WriteLine("SqlConnection Failed Exception" + e.Message);
             }
+            List<String> tableNames = new List<string>();
+            DataTable tables = dbConnection.GetSchema("Tables");
+            foreach(DataRow row in tables.Rows)
+            {
+                string tablename = (string)row[2];
+                tableNames.Add(tablename);
+            }
+            foreach(String row in tableNames)//get names and columns for each table in the database
+            {
+                dbConnection.Close();
+                dbConnection.Open();
+                var command = new SqlCommand("SELECt * FROM dbo." + row + " WHERE 1 =2;",dbConnection);
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read() || reader.VisibleFieldCount != 0)
+                {
+                    List<string> colNames = new List<string>();
+                    for(int i = 0; i < reader.FieldCount; i++)
+                    {
+                        colNames.Add(reader.GetName(i));
+                    }
+                    tableRestrictions[row] = colNames.ToArray();
+                    break;
+                }
+            }
+            Console.WriteLine("Done finding table restrictions");
+            dbConnection.Close();
         }
 
         public void InsertUser(string payload)
         {
+            dbConnection.Open();
             string query = "INSERT INTO Users (Email, Password, AdminAccess, ListingAmounts, ListScore)";
             query = query + "VALUES (@email, @password, @adminAccess, @listingAmounts, @listScore)";
             SqlCommand command = new SqlCommand(query, dbConnection);
@@ -48,11 +77,48 @@ namespace _1530Application
             //command.Parameters["@listScore"].Value = payload.something5;
 
             command.ExecuteNonQuery();
+            dbConnection.Close();
         }
-
-        public string SearchUser(string payload)
+        /// <summary>
+        /// Return all users
+        /// </summary>
+        /// <returns></returns>
+        public string SearchUser()
         {
-            string query = "SELECT ALL FROM Users where email= @email";
+            dbConnection.Open();
+            string query = "SELECT * FROM dbo.Users;";
+            SqlCommand command = new SqlCommand(query, dbConnection);
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                Console.WriteLine("User Rows Below");
+                while (reader.Read())
+                {
+                    Console.WriteLine("*** New Row ***");
+                    for (int x = 0; x < reader.FieldCount; x++)
+                    {
+                        Console.WriteLine(reader.GetName(x) + " : " + reader[x]);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error retrieving users");
+            }
+            dbConnection.Close();
+            return null;
+        }
+        /// <summary>
+        /// Return a queried list of users to be selected upon
+        /// </summary>
+        /// <param name="payload">
+        /// Dictonary of query paramters to query based on
+        /// </param>
+        /// <returns></returns>
+        public string SearchUser(Dictionary<string,string> payload)
+        {
+            string query = "SELECT * FROM dbo.Users WHERE " +
+                string.Join(",", payload.Select(kv => kv.Key + "=" + kv.Value).ToArray()) + ";";
 
             SqlCommand command = new SqlCommand(query, dbConnection);
             //command.Parameters.Add("@email", SqlDbType.String);
@@ -107,6 +173,7 @@ namespace _1530Application
         /// <returns></returns>
         public string SearchMapListings()
         {
+            dbConnection.Open();
             string query = "SELECT * FROM dbo.MapListings;";  //TODO this
 
             SqlCommand command = new SqlCommand(query, dbConnection);
@@ -131,6 +198,7 @@ namespace _1530Application
             {
                 Console.WriteLine("Error in retrieving map listings");
             }
+            dbConnection.Close();
             // return results?
             return null;
         }
@@ -143,8 +211,7 @@ namespace _1530Application
         /// </param>
         /// <returns></returns>
         public string SearchMapListings(Dictionary<string, string> queryParams)
-        {
-            dbConnection.Close();
+        {         
             dbConnection.Open();
             string query = "SELECT * FROM dbo.MapListings WHERE " +
                 string.Join(",", queryParams.Select(kv => kv.Key + "=" + kv.Value).ToArray())+";";  //Pass in a dictionary of query parameters to be used in the
@@ -171,6 +238,7 @@ namespace _1530Application
             {
                 Console.WriteLine("Error in retrieving map listings");
             }
+            dbConnection.Close();
             // return results?
             return null;
         }
