@@ -138,19 +138,27 @@ namespace _1530Application
             return null;
         }
 
-        public string InsertMapListing(string payload)
+        public string InsertMapListing(Dictionary<string, string> entries)
         {
-            string query = "INSERT INTO MapListings (Xcoord, Ycoord, Description, Image, Upvotes, Downvotes, Creator, Tags)";
+            string query = String.Format("INSERT INTO MapListings ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})",
+                                            entries["Xcoord"],
+                                            entries["Ycoord"],
+                                            entries["Description"],
+                                            entries["Image"],
+                                            entries["Upvotes"],
+                                            entries["Downvotes"],
+                                            entries["Creator"],
+                                            entries["Tags"]);
             query = query + "VALUES (@xcoord, @ycoord, @description, @image, @upvotes, @downvotes, @creator, @tags)";
             SqlCommand command = new SqlCommand(query, dbConnection);
             //command.Parameters.Add("@xcoord", SqlDbType.String);
             //command.Parameters.Add("@ycoord", SqlDbType.String);
             //command.Parameters.Add("@description", SqlDbType.String);
-            command.Parameters.Add("@image", SqlDbType.Int);
-            command.Parameters.Add("@upvotes", SqlDbType.Int);
-            command.Parameters.Add("@downvotes", SqlDbType.Int);
-            command.Parameters.Add("@creator", SqlDbType.Int);
-            command.Parameters.Add("@tags", SqlDbType.Int);
+            //command.Parameters.Add("@image", SqlDbType.Int);
+            //command.Parameters.Add("@upvotes", SqlDbType.Int);
+            //command.Parameters.Add("@downvotes", SqlDbType.Int);
+            //command.Parameters.Add("@creator", SqlDbType.Int);
+            //command.Parameters.Add("@tags", SqlDbType.Int);
 
             // will probably need to convert payload from string to json or someting liek that
 
