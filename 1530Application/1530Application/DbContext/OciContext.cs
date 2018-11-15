@@ -13,7 +13,7 @@ namespace _1530Application
             dbConnection = new SqlConnection("user id=admin;" +
                                        "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
                                        "Trusted_Connection=no;" +
-                                       "database=OitDb; " +
+                                       "database=Oitdb; " +
                                        "connection timeout=30");
             try
             {
@@ -101,22 +101,29 @@ namespace _1530Application
 
         public string SearchMapListings(string payload)
         {
-            string query = "SELECT ALL FROM MapListings where =";  //TODO this
+            string query = "SELECT * FROM dbo.MapListings;";  //TODO this
 
             SqlCommand command = new SqlCommand(query, dbConnection);
             //command.Parameters.Add("@", SqlDbType.String); // TODO
-
+            command.CommandTimeout = 15;
+            command.CommandType = CommandType.Text;
             //command.Parameters["@"].Value = payload.something; // TODO
             SqlDataReader reader = command.ExecuteReader();
             try
             {
+                Console.WriteLine("Below are all MapListings rows");
                 while (reader.Read())
                 {
-                    // do something
+                    Console.WriteLine("*** New Row ***");
+                    for (int x = 0; x < reader.FieldCount; x++)
+                    {
+                        Console.WriteLine(reader.GetName(x) + " : " + reader[x]);
+                    }
                 }
             }
             catch (Exception e)
             {
+                Console.WriteLine("Error in retrieving map listings");
             }
             // return results?
             return null;

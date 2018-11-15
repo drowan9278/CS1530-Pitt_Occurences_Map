@@ -1,5 +1,8 @@
-﻿using System;
+﻿using _1530Application;
+using System;
 using System.Data.Common;
+
+
 
 namespace ConsoleApp1
 {
@@ -8,7 +11,8 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            DbConnection connection = new Db
+            DbConnection1530 dbcon = new DbConnection1530();
+            dbcon.SearchMapListings(" ");
         }
     }
 }

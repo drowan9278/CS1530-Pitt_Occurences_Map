@@ -9,7 +9,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1530ApplicationTests", "153
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A47F204A-1F95-415C-A5E0-8115F3919AB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{DCAC74DC-5F25-4046-A24A-ED4346B1FC51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{DCAC74DC-5F25-4046-A24A-ED4346B1FC51}"
+	ProjectSection(ProjectDependencies) = postProject
+		{186662BB-C5D8-4BAC-AA55-5601B93572AD} = {186662BB-C5D8-4BAC-AA55-5601B93572AD}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

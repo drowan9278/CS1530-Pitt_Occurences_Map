@@ -10,7 +10,7 @@ namespace _1530Application
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            DbConnection dbConnection = new DbConnection();
+            DbConnection1530 dbConnection = new DbConnection1530();
         }
     }
 }
