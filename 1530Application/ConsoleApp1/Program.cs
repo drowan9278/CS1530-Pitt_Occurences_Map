@@ -1,15 +1,12 @@
 ﻿using _1530Application;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
-
-
 
 namespace ConsoleApp1
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine("Driver Program to test core features of the program");
             DbConnection1530 dbcon = new DbConnection1530();
@@ -17,7 +14,7 @@ namespace ConsoleApp1
             Dictionary<string, string> queryParams = new Dictionary<string, string>();
             queryParams["Image"] = "1";//Add as many parameters as you would like
             Console.WriteLine("Testing with Dictionary");
-            dbcon.SearchMapListings(queryParams);
+            var list = dbcon.SearchMapListings(queryParams);
             Console.WriteLine("Done Testing");
         }
     }

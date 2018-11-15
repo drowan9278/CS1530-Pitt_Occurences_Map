@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _1530Application.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -30,21 +31,21 @@ namespace _1530Application
             }
             List<String> tableNames = new List<string>();
             DataTable tables = dbConnection.GetSchema("Tables");
-            foreach(DataRow row in tables.Rows)
+            foreach (DataRow row in tables.Rows)
             {
                 string tablename = (string)row[2];
                 tableNames.Add(tablename);
             }
-            foreach(String row in tableNames)//get names and columns for each table in the database
+            foreach (String row in tableNames)//get names and columns for each table in the database
             {
                 dbConnection.Close();
                 dbConnection.Open();
-                var command = new SqlCommand("SELECt * FROM dbo." + row + " WHERE 1 =2;",dbConnection);
+                var command = new SqlCommand("SELECt * FROM dbo." + row + " WHERE 1 =2;", dbConnection);
                 SqlDataReader reader = command.ExecuteReader();
                 while (reader.Read() || reader.VisibleFieldCount != 0)
                 {
                     List<string> colNames = new List<string>();
-                    for(int i = 0; i < reader.FieldCount; i++)
+                    for (int i = 0; i < reader.FieldCount; i++)
                     {
                         colNames.Add(reader.GetName(i));
                     }
@@ -79,6 +80,7 @@ namespace _1530Application
             command.ExecuteNonQuery();
             dbConnection.Close();
         }
+
         /// <summary>
         /// Return all users
         /// </summary>
@@ -108,6 +110,7 @@ namespace _1530Application
             dbConnection.Close();
             return null;
         }
+
         /// <summary>
         /// Return a queried list of users to be selected upon
         /// </summary>
@@ -115,7 +118,7 @@ namespace _1530Application
         /// Dictonary of query paramters to query based on
         /// </param>
         /// <returns></returns>
-        public string SearchUser(Dictionary<string,string> payload)
+        public string SearchUser(Dictionary<string, string> payload)
         {
             string query = "SELECT * FROM dbo.Users WHERE " +
                 string.Join(",", payload.Select(kv => kv.Key + "=" + kv.Value).ToArray()) + ";";
@@ -179,7 +182,7 @@ namespace _1530Application
         /// Return all Map Listings
         /// </summary>
         /// <returns></returns>
-        public string SearchMapListings()
+        public List<MapListing> SearchMapListings()
         {
             dbConnection.Open();
             string query = "SELECT * FROM dbo.MapListings;";  //TODO this
@@ -190,6 +193,7 @@ namespace _1530Application
             command.CommandType = CommandType.Text;
             //command.Parameters["@"].Value = payload.something; // TODO
             SqlDataReader reader = command.ExecuteReader();
+            List<MapListing> listings = new List<MapListing>();
             try
             {
                 Console.WriteLine("Below are all MapListings rows");
@@ -200,15 +204,16 @@ namespace _1530Application
                     {
                         Console.WriteLine(reader.GetName(x) + " : " + reader[x]);
                     }
+                    listings.Add(new MapListing(reader));
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error in retrieving map listings");
+                Console.WriteLine("Error in retrieving map listings : " + e);
             }
             dbConnection.Close();
             // return results?
-            return null;
+            return listings;
         }
 
         /// <summary>
@@ -218,11 +223,11 @@ namespace _1530Application
         /// Dictionary of Paramters to query on
         /// </param>
         /// <returns></returns>
-        public string SearchMapListings(Dictionary<string, string> queryParams)
-        {         
+        public List<MapListing> SearchMapListings(Dictionary<string, string> queryParams)
+        {
             dbConnection.Open();
             string query = "SELECT * FROM dbo.MapListings WHERE " +
-                string.Join(",", queryParams.Select(kv => kv.Key + "=" + kv.Value).ToArray())+";";  //Pass in a dictionary of query parameters to be used in the
+                string.Join(",", queryParams.Select(kv => kv.Key + "=" + kv.Value).ToArray()) + ";";  //Pass in a dictionary of query parameters to be used in the
                                                                                                       // in the where statement
             SqlCommand command = new SqlCommand(query, dbConnection);
             //command.Parameters.Add("@", SqlDbType.String); // TODO
@@ -230,6 +235,7 @@ namespace _1530Application
             command.CommandType = CommandType.Text;
             //command.Parameters["@"].Value = payload.something; // TODO
             SqlDataReader reader = command.ExecuteReader();
+            List<MapListing> listings = new List<MapListing>();
             try
             {
                 Console.WriteLine("Below are all MapListings rows");
@@ -240,6 +246,7 @@ namespace _1530Application
                     {
                         Console.WriteLine(reader.GetName(x) + " : " + reader[x]);
                     }
+                    listings.Add(new MapListing(reader));
                 }
             }
             catch (Exception e)
@@ -248,7 +255,7 @@ namespace _1530Application
             }
             dbConnection.Close();
             // return results?
-            return null;
+            return listings;
         }
 
         public string InsertTag(string payload)
