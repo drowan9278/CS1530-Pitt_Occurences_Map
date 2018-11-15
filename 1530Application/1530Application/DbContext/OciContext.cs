@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace _1530Application
 {
@@ -99,6 +100,7 @@ namespace _1530Application
             command.ExecuteNonQuery();
             return null;
         }
+
         /// <summary>
         /// Return all Map Listings
         /// </summary>
@@ -132,6 +134,7 @@ namespace _1530Application
             // return results?
             return null;
         }
+
         /// <summary>
         /// Query based on certain inputs
         /// </summary>
@@ -139,10 +142,13 @@ namespace _1530Application
         /// Dictionary of Paramters to query on
         /// </param>
         /// <returns></returns>
-        public string SearchMapListings( Dictionary<string, string> queryParams)
+        public string SearchMapListings(Dictionary<string, string> queryParams)
         {
-            string query = "SELECT * FROM dbo.MapListings;";  //TODO this
-
+            dbConnection.Close();
+            dbConnection.Open();
+            string query = "SELECT * FROM dbo.MapListings WHERE " +
+                string.Join(",", queryParams.Select(kv => kv.Key + "=" + kv.Value).ToArray())+";";  //Pass in a dictionary of query parameters to be used in the
+                                                                                                      // in the where statement
             SqlCommand command = new SqlCommand(query, dbConnection);
             //command.Parameters.Add("@", SqlDbType.String); // TODO
             command.CommandTimeout = 15;
