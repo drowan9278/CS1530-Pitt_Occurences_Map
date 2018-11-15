@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -98,8 +99,47 @@ namespace _1530Application
             command.ExecuteNonQuery();
             return null;
         }
+        /// <summary>
+        /// Return all Map Listings
+        /// </summary>
+        /// <returns></returns>
+        public string SearchMapListings()
+        {
+            string query = "SELECT * FROM dbo.MapListings;";  //TODO this
 
-        public string SearchMapListings(string payload)
+            SqlCommand command = new SqlCommand(query, dbConnection);
+            //command.Parameters.Add("@", SqlDbType.String); // TODO
+            command.CommandTimeout = 15;
+            command.CommandType = CommandType.Text;
+            //command.Parameters["@"].Value = payload.something; // TODO
+            SqlDataReader reader = command.ExecuteReader();
+            try
+            {
+                Console.WriteLine("Below are all MapListings rows");
+                while (reader.Read())
+                {
+                    Console.WriteLine("*** New Row ***");
+                    for (int x = 0; x < reader.FieldCount; x++)
+                    {
+                        Console.WriteLine(reader.GetName(x) + " : " + reader[x]);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in retrieving map listings");
+            }
+            // return results?
+            return null;
+        }
+        /// <summary>
+        /// Query based on certain inputs
+        /// </summary>
+        /// <param name="queryParams">
+        /// Dictionary of Paramters to query on
+        /// </param>
+        /// <returns></returns>
+        public string SearchMapListings( Dictionary<string, string> queryParams)
         {
             string query = "SELECT * FROM dbo.MapListings;";  //TODO this
 
