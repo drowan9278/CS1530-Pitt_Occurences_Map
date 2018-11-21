@@ -2,6 +2,7 @@
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(_1530Application.Startup))]
+
 namespace _1530Application
 {
     public partial class Startup
@@ -9,6 +10,7 @@ namespace _1530Application
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
+            DbConnection1530 dbConnection = new DbConnection1530();
         }
     }
 }
