@@ -185,7 +185,7 @@ namespace _1530Application
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public static List<MapListing> SearchMapListings()
+        public List<MapListing> SearchMapListings()
         {
 
             SqlConnection dbConnection = new SqlConnection("user id=admin;" +

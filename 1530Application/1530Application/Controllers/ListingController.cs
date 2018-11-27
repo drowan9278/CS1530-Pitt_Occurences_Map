@@ -14,6 +14,12 @@ namespace _1530Application.Controllers
         {
             return View();
         }
+        public ActionResult GrabListings()
+        {
+            DbConnection1530 db = new DbConnection1530();
+            List<MapListing> listings = db.SearchMapListings();
+            return Json(listings);
+        }
 
     }
 }

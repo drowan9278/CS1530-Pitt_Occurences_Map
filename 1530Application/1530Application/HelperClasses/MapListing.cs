@@ -1,7 +1,9 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 namespace _1530Application.HelperClasses
 {
+    [Serializable]
     public class MapListing
     {
         private double Xcord { get; set; }
