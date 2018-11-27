@@ -143,9 +143,10 @@ namespace _1530Application
 
         public string InsertMapListing(Dictionary<string, string> entries)
         {
+            Random rnd = new Random();
             dbConnection.Open();
             string query = String.Format("INSERT INTO dbo.MapListings ([listID],[Xcoord] ,[Ycoord] ,[description],[iType],[voteVal],[creator]) VALUES({0}, {1}, {2}, '{3}', '{4}', {5},'{6}')",
-                                            0,
+                                            rnd.Next(0,int.MaxValue),
                                             entries["Xcoord"],
                                             entries["Ycoord"],
                                             entries["Description"],
