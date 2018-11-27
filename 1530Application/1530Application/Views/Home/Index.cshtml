@@ -1,11 +1,12 @@
 ﻿@{
     ViewBag.Title = "Oakland Inconvenience Tracker";
 }
+<asp:ScriptManager EnablePageMethods="true" ID="scriptMgr" runat="server"></asp:ScriptManager>
 
-
-<div class="row">
+<script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<div class="row" runat="server">
     <div id="map" align="center" style="width:1250px;height:850px;margin-top:25px"></div>
-
+    <script src="/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
     <script>
         function myMap() {
             var mapOptions = {
@@ -16,11 +17,44 @@
 
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-            addListing("test,40.441548,-79.956469,Construction Pothole,Sidewalk is closed.", map);
+            addListing("Construction:40.441548:-79.956469:Sennott Square CS1530:Three elevators are closed. It is reccommended to take the stairs.", map);
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("Index","ListingController")",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    alert('Success!');
+                    alert(result);
+                    var arrayLength = result.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        addListing(result[i], map);
+                    }
+                }, 
+                failure: function (result) {
+                    alert('Error loading listing data');
+                } 
+            });
+
+            function onSuccess(result) {
+                alert('Success!');
+                var arrayLength = result.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    addListing(result[i], map);
+                }
+            }
+
+            function onError(result) {
+                alert('Error loading listing data');
+            }
+
+
         }
 
         function addListing(listing, map) {
-            var str = listing.split(",");
+            var str = listing.split(":");
             var myLatLng = { lat: parseFloat(str[1]), lng: parseFloat(str[2]) };
 
             var contentString = '<div id="content">' +
@@ -53,3 +87,4 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDeD15Z4envmo17tRmHPSMNgZo70BiJuo&callback=myMap"></script>
 </div>
+
