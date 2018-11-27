@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web.Mvc;
+using System.Web.Services;
 
 namespace _1530Application
 {
@@ -182,8 +184,15 @@ namespace _1530Application
         /// Return all Map Listings
         /// </summary>
         /// <returns></returns>
-        public List<MapListing> SearchMapListings()
+        [HttpPost]
+        public static List<MapListing> SearchMapListings()
         {
+
+            SqlConnection dbConnection = new SqlConnection("user id=admin;" +
+                                       "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
+                                       "Trusted_Connection=no;" +
+                                       "database=Oitdb; " +
+                                       "connection timeout=30");
             dbConnection.Open();
             string query = "SELECT * FROM dbo.MapListings;";  //TODO this
 
