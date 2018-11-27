@@ -18,7 +18,7 @@ namespace _1530Application
             dbConnection = new SqlConnection("user id=admin;" +
                                        "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
                                        "Trusted_Connection=no;" +
-                                       "database=Oitdb; " +
+                                       "database=OITDB_v2; " +
                                        "connection timeout=30");
             try
             {
@@ -143,16 +143,16 @@ namespace _1530Application
 
         public string InsertMapListing(Dictionary<string, string> entries)
         {
-            string query = String.Format("INSERT INTO MapListings ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})",
+            dbConnection.Open();
+            string query = String.Format("INSERT INTO dbo.MapListings ([listID],[Xcoord] ,[Ycoord] ,[description],[iType],[voteVal],[creator]) VALUES({0}, {1}, {2}, '{3}', '{4}', {5},'{6}')",
+                                            0,
                                             entries["Xcoord"],
                                             entries["Ycoord"],
                                             entries["Description"],
                                             entries["Image"],
                                             entries["Upvotes"],
-                                            entries["Downvotes"],
-                                            entries["Creator"],
-                                            entries["Tags"]);
-            query = query + "VALUES (@xcoord, @ycoord, @description, @image, @upvotes, @downvotes, @creator, @tags)";
+                                            entries["Creator"]);
+            
             SqlCommand command = new SqlCommand(query, dbConnection);
             //command.Parameters.Add("@xcoord", SqlDbType.String);
             //command.Parameters.Add("@ycoord", SqlDbType.String);
@@ -175,7 +175,9 @@ namespace _1530Application
             //command.Parameters["@tags"].Value = payload.something5;
 
             command.ExecuteNonQuery();
+            dbConnection.Close();
             return null;
+            
         }
 
         /// <summary>

@@ -88,7 +88,7 @@
 			var latVal = document.getElementById("lat").value;
 			var lngVal = document.getElementById("lng").value;
 			
-			var tagVal = $("#tagPill").select2("val");
+			var tagVal = $("#tagPill").select("val");
 			var tagValFix = "";
 			for (var k = 0, length = tagVal.length; k < length; k++)
 			{
@@ -116,11 +116,13 @@
 			}
 			
 			var obj = {type: radVal, lat: latVal, lng: lngVal, tags: tagValFix, details: detailsVal};
-			$.ajax({
-				type: "POST",
-				dataType: "json",
-				url: "https://github.com/drowan9278/CS1530-Pitt_Occurences_Map/blob/master/1530Application/1530Application/Controllers/ListingController.cs",
-				data: JSON.stringify(obj),     
+            $.ajax({
+                dataType: "json",
+                type: "POST",
+                dataType: 'application/json; charset=utf-8',
+                url: "@Url.Action("InsertListing","Listing")",
+                cache: false,
+                data: { 'Type': radVal, 'Lat': latVal, 'Lng': lngVal, 'Tags': tagValFix, 'Details': detailsVal },     
 				success: function (msg) {
 					alert("ALERT");
 				}
