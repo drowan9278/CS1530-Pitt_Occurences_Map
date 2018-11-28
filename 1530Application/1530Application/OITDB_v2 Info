@@ -31,6 +31,7 @@ Users:
 VotedOn:
 - tracks which users have voted on which listings
 - Pair not in table means no vote made
-- voteType = 0 means downvote
+- voteType = -1 means downvote
 - voteType = 1 means upvote
+- check constraint ensures only -1 or 1 will be entered
 - trigger updates voteVal of listing when this table is changed
