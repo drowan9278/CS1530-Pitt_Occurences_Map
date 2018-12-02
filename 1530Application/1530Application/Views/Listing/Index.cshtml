@@ -6,7 +6,7 @@
 	
 	<script>
 		$(document).ready(function() {
-		$("#tagPill").select2();
+		$("#tagPill").select();
 		});
 	</script>
 </head>
@@ -27,14 +27,19 @@
     <script>
         function myMap() {
             var mapOptions = {
-                center: new google.maps.LatLng(40.441548, -79.956469),
-                zoom: 17,
-                mapTypeId: google.maps.MapTypeId.HYBRID
+                center: new google.maps.LatLng(45.441548, -79.956469),
+                zoom: 1,
+                mapTypeId: google.maps.MapTypeId.HYBRID,
+                zoomControl: true
             }
-            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+            var map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 40.441548, lng: -79.956469 },
+                zoom: 14
+            });
+            map.setZoom(15);
 		}
 	</script>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDeD15Z4envmo17tRmHPSMNgZo70BiJuo&callBack=myMap"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByDz33FOlG2ZO5kS9isfdnZ1ljYrpq4ZM&callBack=myMap"></script>
 	
 	<input type="text" id="lat" readonly="yes">
 	<input type="text" id="lng" readonly="yes">
@@ -144,7 +149,7 @@
 	</br></br>
     <input type="button" onclick = "gatherInfo()" value="Sumbit Inconvenience" name="submit">
 </form>
-<script type="text/javascript" src="map.js"></script>
+<script type="text/javascript" src="~/Scripts/map.js"></script>
 
 <script>
 function saveText(text, filename){
