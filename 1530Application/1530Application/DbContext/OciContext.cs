@@ -154,28 +154,22 @@ namespace _1530Application
                                             entries["Upvotes"],
                                             entries["Creator"]);
             
-            SqlCommand command = new SqlCommand(query, dbConnection);
-            //command.Parameters.Add("@xcoord", SqlDbType.String);
-            //command.Parameters.Add("@ycoord", SqlDbType.String);
-            //command.Parameters.Add("@description", SqlDbType.String);
-            //command.Parameters.Add("@image", SqlDbType.Int);
-            //command.Parameters.Add("@upvotes", SqlDbType.Int);
-            //command.Parameters.Add("@downvotes", SqlDbType.Int);
-            //command.Parameters.Add("@creator", SqlDbType.Int);
-            //command.Parameters.Add("@tags", SqlDbType.Int);
-
-            // will probably need to convert payload from string to json or someting liek that
-
-            //command.Parameters["@xcoord"].Value = payload.something;
-            //command.Parameters["@ycoord"].Value = payload.something2;
-            //command.Parameters["@description"].Value = payload.something3;
-            //command.Parameters["@image"].Value = payload.something4;
-            //command.Parameters["@upvotes"].Value = payload.something5;
-            //command.Parameters["@downvotes"].Value = payload.something5;
-            //command.Parameters["@creator"].Value = payload.something5;
-            //command.Parameters["@tags"].Value = payload.something5;
-
-            command.ExecuteNonQuery();
+            SqlCommand command = new SqlCommand("proc_addListing",dbConnection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.Add(new SqlParameter("@Xcoord", entries["Xcoord"]));
+            command.Parameters.Add(new SqlParameter("@Ycoord", entries["Ycoord"]));
+            command.Parameters.Add(new SqlParameter("@description", entries["Description"]));
+            command.Parameters.Add(new SqlParameter("@iType", entries["Image"]));
+            command.Parameters.Add(new SqlParameter("@creator", entries["Creator"]));
+            command.Parameters.Add(new SqlParameter("@allTags", entries["Tags"]));
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+            }
             dbConnection.Close();
             return null;
             
