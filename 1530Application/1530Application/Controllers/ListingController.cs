@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _1530Application.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,6 +14,15 @@ namespace _1530Application.Controllers
         {
             return View();
         }
+
+        public ActionResult GrabListings()
+        {
+            DbConnection1530 db = new DbConnection1530();
+            List<MapListing> listings = db.SearchMapListings();
+            return Json(listings);
+        }
+
+
         [HttpPost]
         public ActionResult InsertListing(string Type, string Lat, string Lng, string Tags, string Details)
         {

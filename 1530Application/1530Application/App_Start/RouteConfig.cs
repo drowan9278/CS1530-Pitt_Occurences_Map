@@ -14,6 +14,12 @@ namespace _1530Application
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                  "Listings",
+                  "{controller}/{action}/{id}",
+                  new { controller = "OciContext", action = "SearchMapListings", id = "" }
+                  );
         }
     }
 }

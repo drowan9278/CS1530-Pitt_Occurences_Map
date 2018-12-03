@@ -1,31 +1,90 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Oakland Inconvenience Tracker";
 }
+<asp:ScriptManager EnablePageMethods="true" ID="scriptMgr" runat="server"></asp:ScriptManager>
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<script src="http://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<div class="row" runat="server">
+    <div id="map" align="center" style="width:1250px;height:850px;margin-top:25px"></div>
+    <script src="/Scripts/jquery-1.10.2.js" type="text/javascript"></script>
+    <script>
+        function myMap() {
+            var mapOptions = {
+                center: new google.maps.LatLng(40.441548, -79.956469),
+                zoom: 17,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            }
+
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+
+            addListing("Construction:40.441548:-79.956469:Sennott Square CS1530:Three elevators are closed. It is reccommended to take the stairs.", map);
+
+            $.ajax({
+                type: "POST",
+                uincrl: "@Url.Action("GrabListings","Listing")",
+                data: "{}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    alert('Success!');
+                    alert(result);
+                    var arrayLength = result.length;
+                    for (var i = 0; i < arrayLength; i++) {
+                        addListing(result[i], map);
+                    }
+                }, 
+                failure: function (result) {
+                    alert('Error loading listing data');
+                } 
+            });
+
+            function onSuccess(result) {
+                alert('Success!');
+                var arrayLength = result.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    addListing(result[i], map);
+                }
+            }
+
+            function onError(result) {
+                alert('Error loading listing data');
+            }
+
+
+        }
+
+        function addListing(listing, map) {
+            var str = listing.split(":");
+            var myLatLng = { lat: parseFloat(str[1]), lng: parseFloat(str[2]) };
+
+            var contentString = '<div id="content">' +
+                '<div id="siteNotice">' +
+                '</div>' +
+                '<h1 id="firstHeading" class="firstHeading">' + str[0] + '</h1>' +
+                '<div id="bodyContent">' +
+                '<p>' + str[3] + '</p>' +
+                '<p>' + str[4] + '</p>' +
+                '</div>';
+
+            var infowindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            marker = new google.maps.Marker({
+                position: myLatLng,
+                map: map,
+                draggable: false,
+                title: str[0],
+                tags: str[3],
+                details: [4]
+            });
+
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDeD15Z4envmo17tRmHPSMNgZo70BiJuo&callback=myMap"></script>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-    </div>
-</div>
