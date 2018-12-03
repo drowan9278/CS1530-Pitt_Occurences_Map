@@ -1,0 +1,37 @@
+OITDB_v2 Info:
+
+Affects:
+- Stores relationship between listing and tags it affects
+- Use proc_addListing to insert to list to keep this table up to date
+- pro_addListing(Xcoord, Ycoord, type, creator, allTags)
+	allTags is a String of Tags that are comma seperated (e.g. "CS1530,Forbes,Fifth,Sennott Square")
+	
+ListensTo:
+- Meant to store users monitored tags
+- Currently needs to be inserted into manually
+- And read manually 
+
+Logs:
+- Stores
+
+MapListings:
+- stores listings with
+- voteVal increase with upvotes and decreases with downvotes
+- initial voteVal is set based on type
+- trigger removes listings which drop to 0 in voteVal
+
+Tags:
+- stores tag names and descriptions
+
+Users:
+- stores user info
+- listAmount tracks number of posts and is updates on insert to MapListings
+- adminAcc is 0 or 1 for user or admin respectively
+
+VotedOn:
+- tracks which users have voted on which listings
+- Pair not in table means no vote made
+- voteType = -1 means downvote
+- voteType = 1 means upvote
+- check constraint ensures only -1 or 1 will be entered
+- trigger updates voteVal of listing when this table is changed

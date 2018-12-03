@@ -11,13 +11,13 @@ function initMap() {
  
     //Map options.
     var options = {
-      center: centerOfMap, //Set center.
-      zoom: 7 //The zoom value.
+        center: { lat: 85.441548, lng: -79.956469 },
+        zoom: 14,
+        zoomControl: true
     };
  
     //Create the map object.
     map = new google.maps.Map(document.getElementById('map'), options);
- 
     //Listen for any clicks on the map.
     google.maps.event.addListener(map, 'click', function(event) {                
         //Get the location that the user clicked.

@@ -20,7 +20,7 @@ namespace _1530Application
             dbConnection = new SqlConnection("user id=admin;" +
                                        "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
                                        "Trusted_Connection=no;" +
-                                       "database=Oitdb; " +
+                                       "database=OITDB_v2; " +
                                        "connection timeout=30");
             try
             {
@@ -145,39 +145,36 @@ namespace _1530Application
 
         public string InsertMapListing(Dictionary<string, string> entries)
         {
-            string query = String.Format("INSERT INTO MapListings ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})",
+            Random rnd = new Random();
+            dbConnection.Open();
+            string query = String.Format("INSERT INTO dbo.MapListings ([listID],[Xcoord] ,[Ycoord] ,[description],[iType],[voteVal],[creator]) VALUES({0}, {1}, {2}, '{3}', '{4}', {5},'{6}')",
+                                            rnd.Next(0,int.MaxValue),
                                             entries["Xcoord"],
                                             entries["Ycoord"],
                                             entries["Description"],
                                             entries["Image"],
                                             entries["Upvotes"],
-                                            entries["Downvotes"],
-                                            entries["Creator"],
-                                            entries["Tags"]);
-            query = query + "VALUES (@xcoord, @ycoord, @description, @image, @upvotes, @downvotes, @creator, @tags)";
-            SqlCommand command = new SqlCommand(query, dbConnection);
-            //command.Parameters.Add("@xcoord", SqlDbType.String);
-            //command.Parameters.Add("@ycoord", SqlDbType.String);
-            //command.Parameters.Add("@description", SqlDbType.String);
-            //command.Parameters.Add("@image", SqlDbType.Int);
-            //command.Parameters.Add("@upvotes", SqlDbType.Int);
-            //command.Parameters.Add("@downvotes", SqlDbType.Int);
-            //command.Parameters.Add("@creator", SqlDbType.Int);
-            //command.Parameters.Add("@tags", SqlDbType.Int);
-
-            // will probably need to convert payload from string to json or someting liek that
-
-            //command.Parameters["@xcoord"].Value = payload.something;
-            //command.Parameters["@ycoord"].Value = payload.something2;
-            //command.Parameters["@description"].Value = payload.something3;
-            //command.Parameters["@image"].Value = payload.something4;
-            //command.Parameters["@upvotes"].Value = payload.something5;
-            //command.Parameters["@downvotes"].Value = payload.something5;
-            //command.Parameters["@creator"].Value = payload.something5;
-            //command.Parameters["@tags"].Value = payload.something5;
-
-            command.ExecuteNonQuery();
+                                            entries["Creator"]);
+            
+            SqlCommand command = new SqlCommand("proc_addListing",dbConnection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.Add(new SqlParameter("@Xcoord", entries["Xcoord"]));
+            command.Parameters.Add(new SqlParameter("@Ycoord", entries["Ycoord"]));
+            command.Parameters.Add(new SqlParameter("@description", entries["Description"]));
+            command.Parameters.Add(new SqlParameter("@iType", entries["Image"]));
+            command.Parameters.Add(new SqlParameter("@creator", entries["Creator"]));
+            command.Parameters.Add(new SqlParameter("@allTags", entries["Tags"]));
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+            }
+            dbConnection.Close();
             return null;
+            
         }
 
         /// <summary>
