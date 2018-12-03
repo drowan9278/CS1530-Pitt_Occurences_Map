@@ -14,6 +14,17 @@ namespace _1530Application.Controllers
         {
             return View();
         }
+        public ActionResult Upvote(int listID, int voteType)
+        {
+	        DbConnection1530 dbcon = new DbConnection1530();
+            dbcon.UpvoteListing(listID);
+        }
+
+        public ActionResult Downvote(int listID, int voteType)
+        {
+	        DbConnection1530 dbcon = new DbConnection1530();
+            dbcon.DownvoteListing(listID);
+        }
 
         public ActionResult GrabListings()
         {
