@@ -303,5 +303,39 @@ namespace _1530Application
             // return results?
             return null;
         }
+        
+        public void UpvoteListing(int payload)
+        {
+	        dbConnection.Open();
+	        string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, 1)";
+	        SqlCommand command = new SqlCommand(query, dbConnection);
+	        command.Parameters.Add("@listID", SqlDbType.Int);
+	        command.Parameters["@listID"].Value = payload;
+	
+	        try{
+		        command.ExecuteNonQuery();
+	        }
+            catch(Exception e)
+            {
+		        Console.WriteLine(e.InnerException);
+            }
+        }
+
+        public void DownvoteListing(int payload)
+        {
+	        dbConnection.Open();
+	        string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, -1)";
+	        SqlCommand command = new SqlCommand(query, dbConnection);
+	        command.Parameters.Add("@listID", SqlDbType.Int);
+	        command.Parameters["@listID"].Value = payload;
+	
+	        try{
+		        command.ExecuteNonQuery();
+	        }
+            catch(Exception e)
+            {
+		        Console.WriteLine(e.InnerException);
+            }
+        }
     }
 }
