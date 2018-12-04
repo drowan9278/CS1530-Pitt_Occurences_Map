@@ -15,6 +15,33 @@
                 mapTypeId: google.maps.MapTypeId.HYBRID
             }
 
+            function voteFunc(upOrDown, listID){
+                if(upOrDown == 1){
+                    $.ajax({
+                        type: "POST",
+                        dataType: {}
+                        url: "@Url.Action("Upvote","Listing")",
+                        cache: false,
+                        data: {'listID': listID, 'voteType': upOrDown}
+                        success: function (msg) {
+                            alert("Success");
+                        }
+                    });
+                }
+                else{
+                    $.ajax({
+                        type: "POST",
+                        dataType: {}
+                        url: "@Url.Action("Upvote","Listing")",
+                        cache: false,
+                        data: {'listID': listID, 'voteType': upOrDown}
+                        success: function (msg) {
+                            alert("Success");
+                        }
+                    });
+                }
+            }
+
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
             addListing("Test~40.441541~-79.956429~Testing Manually~1~10~0~Admin", map);
@@ -30,12 +57,16 @@
                     for (var i = 0; i < allListings.length; i++) {
                         addListing(allListings[i], map);
                     }
-                }, 
-                failure: function (result) {
-                    alert('Failure loading listing data');
                 },
-                error: function (result, txtStatus, errThrown) {
-                    alert(JSON.stringify(result));
+                failure: function (result) {
+                    alert('Error loading listing data');
+                }
+            });
+            function onSuccess(result) {
+                alert('Success!');
+                var arrayLength = result.length;
+                for (var i = 0; i < arrayLength; i++) {
+                    addListing(result[i], map);
                 }
             });
 
@@ -43,7 +74,6 @@
         }
 
         function addListing(listing, map) {
-
                 var str = listing.split("~");
                 var myLatLng = { lat: parseFloat(str[1]), lng: parseFloat(str[2]) };
                 
@@ -55,6 +85,7 @@
                     '<p>' + str[3] + '</p>' +
                     '<p>' + str[7] + '</p>' +
                     '</div>';
+
 
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
@@ -82,7 +113,16 @@
             
         }
     </script>
-
+    <script>
+        function myMap() {
+            var mapOptions = {
+                center: new google.maps.LatLng(40.441548, -79.956469),
+                zoom: 17,
+                mapTypeId: google.maps.MapTypeId.HYBRID
+            }
+            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        }
+    </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDeD15Z4envmo17tRmHPSMNgZo70BiJuo&callback=myMap"></script>
 </div>
 

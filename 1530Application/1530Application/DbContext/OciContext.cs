@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+
 using System.Diagnostics;
+
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Services;
@@ -22,7 +24,7 @@ namespace _1530Application
             dbConnection = new SqlConnection("user id=admin;" +
                                        "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
                                        "Trusted_Connection=no;" +
-                                       "database=Oitdb; " +
+                                       "database=OITDB_v2; " +
                                        "connection timeout=30");
             try
             {
@@ -147,47 +149,33 @@ namespace _1530Application
 
         public string InsertMapListing(Dictionary<string, string> entries)
         {
-            string query = String.Format("INSERT INTO MapListings ({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7})",
-                                            entries["Xcoord"],
-                                            entries["Ycoord"],
-                                            entries["Description"],
-                                            entries["Image"],
-                                            entries["Upvotes"],
-                                            entries["Downvotes"],
-                                            entries["Creator"],
-                                            entries["Tags"]);
-            query = query + "VALUES (@xcoord, @ycoord, @description, @image, @upvotes, @downvotes, @creator, @tags)";
-            SqlCommand command = new SqlCommand(query, dbConnection);
-            //command.Parameters.Add("@xcoord", SqlDbType.String);
-            //command.Parameters.Add("@ycoord", SqlDbType.String);
-            //command.Parameters.Add("@description", SqlDbType.String);
-            //command.Parameters.Add("@image", SqlDbType.Int);
-            //command.Parameters.Add("@upvotes", SqlDbType.Int);
-            //command.Parameters.Add("@downvotes", SqlDbType.Int);
-            //command.Parameters.Add("@creator", SqlDbType.Int);
-            //command.Parameters.Add("@tags", SqlDbType.Int);
-
-            // will probably need to convert payload from string to json or someting liek that
-
-            //command.Parameters["@xcoord"].Value = payload.something;
-            //command.Parameters["@ycoord"].Value = payload.something2;
-            //command.Parameters["@description"].Value = payload.something3;
-            //command.Parameters["@image"].Value = payload.something4;
-            //command.Parameters["@upvotes"].Value = payload.something5;
-            //command.Parameters["@downvotes"].Value = payload.something5;
-            //command.Parameters["@creator"].Value = payload.something5;
-            //command.Parameters["@tags"].Value = payload.something5;
-
-            command.ExecuteNonQuery();
+            
+            SqlCommand command = new SqlCommand("proc_addListing",dbConnection);
+            command.CommandType = CommandType.StoredProcedure;
+            command.Parameters.Add(new SqlParameter("@Xcoord", entries["Xcoord"]));
+            command.Parameters.Add(new SqlParameter("@Ycoord", entries["Ycoord"]));
+            command.Parameters.Add(new SqlParameter("@description", entries["Description"]));
+            command.Parameters.Add(new SqlParameter("@iType", entries["Image"]));
+            command.Parameters.Add(new SqlParameter("@creator", entries["Creator"]));
+            command.Parameters.Add(new SqlParameter("@allTags", entries["Tags"]));
+            try
+            {
+                command.ExecuteNonQuery();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e.InnerException);
+            }
+            dbConnection.Close();
             return null;
+            
         }
 
         /// <summary>
         /// Return all Map Listings
         /// </summary>
         /// <returns></returns>
-        
-        public string SearchMapListings()
+        public List<MapListing> SearchMapListings()
         {
 
             SqlConnection dbConnection = new SqlConnection("user id=admin;" +
@@ -228,12 +216,19 @@ namespace _1530Application
             }
             catch (Exception e)
             {
+
                 Debug.WriteLine("Error in retrieving map listings : " + e);
             }
             dbConnection.Close();
             // return results?
             Debug.WriteLine(result);
             return result;
+                Console.WriteLine("Error in retrieving map listings : " + e);
+            }
+            dbConnection.Close();
+            // return results?
+            return listings;
+
         }
 
         /// <summary>
@@ -317,5 +312,40 @@ namespace _1530Application
             // return results?
             return null;
         }
+        
+        public void UpvoteListing(int payload)
+        {
+	        dbConnection.Open();
+	        string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, 1)";
+	        SqlCommand command = new SqlCommand(query, dbConnection);
+	        command.Parameters.Add("@listID", SqlDbType.Int);
+	        command.Parameters["@listID"].Value = payload;
+	
+	        try{
+		        command.ExecuteNonQuery();
+	        }
+            catch(Exception e)
+            {
+		        Console.WriteLine(e.InnerException);
+            }
+        }
+
+        public void DownvoteListing(int payload)
+        {
+	        dbConnection.Open();
+	        string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, -1)";
+	        SqlCommand command = new SqlCommand(query, dbConnection);
+	        command.Parameters.Add("@listID", SqlDbType.Int);
+	        command.Parameters["@listID"].Value = payload;
+	
+	        try{
+		        command.ExecuteNonQuery();
+	        }
+            catch(Exception e)
+            {
+		        Console.WriteLine(e.InnerException);
+            }
+        }
     }
 }
+
