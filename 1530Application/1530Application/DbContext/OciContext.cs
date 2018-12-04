@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Services;
-//Dbcon
+
 namespace _1530Application
 {
     public class DbConnection1530
@@ -148,15 +148,15 @@ namespace _1530Application
             Random rnd = new Random();
             dbConnection.Open();
             string query = String.Format("INSERT INTO dbo.MapListings ([listID],[Xcoord] ,[Ycoord] ,[description],[iType],[voteVal],[creator]) VALUES({0}, {1}, {2}, '{3}', '{4}', {5},'{6}')",
-                                            rnd.Next(0,int.MaxValue),
+                                            rnd.Next(0, int.MaxValue),
                                             entries["Xcoord"],
                                             entries["Ycoord"],
                                             entries["Description"],
                                             entries["Image"],
                                             entries["Upvotes"],
                                             entries["Creator"]);
-            
-            SqlCommand command = new SqlCommand("proc_addListing",dbConnection);
+
+            SqlCommand command = new SqlCommand("proc_addListing", dbConnection);
             command.CommandType = CommandType.StoredProcedure;
             command.Parameters.Add(new SqlParameter("@Xcoord", entries["Xcoord"]));
             command.Parameters.Add(new SqlParameter("@Ycoord", entries["Ycoord"]));
@@ -168,13 +168,13 @@ namespace _1530Application
             {
                 command.ExecuteNonQuery();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.InnerException);
             }
             dbConnection.Close();
             return null;
-            
+
         }
 
         /// <summary>
@@ -303,38 +303,40 @@ namespace _1530Application
             // return results?
             return null;
         }
-        
+
         public void UpvoteListing(int payload)
         {
-	        dbConnection.Open();
-	        string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, 1)";
-	        SqlCommand command = new SqlCommand(query, dbConnection);
-	        command.Parameters.Add("@listID", SqlDbType.Int);
-	        command.Parameters["@listID"].Value = payload;
-	
-	        try{
-		        command.ExecuteNonQuery();
-	        }
-            catch(Exception e)
+            dbConnection.Open();
+            string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, 1)";
+            SqlCommand command = new SqlCommand(query, dbConnection);
+            command.Parameters.Add("@listID", SqlDbType.Int);
+            command.Parameters["@listID"].Value = payload;
+
+            try
             {
-		        Console.WriteLine(e.InnerException);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException);
             }
         }
 
         public void DownvoteListing(int payload)
         {
-	        dbConnection.Open();
-	        string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, -1)";
-	        SqlCommand command = new SqlCommand(query, dbConnection);
-	        command.Parameters.Add("@listID", SqlDbType.Int);
-	        command.Parameters["@listID"].Value = payload;
-	
-	        try{
-		        command.ExecuteNonQuery();
-	        }
-            catch(Exception e)
+            dbConnection.Open();
+            string query = "INSERT INTO VotedOn VALUES('Anonymous@pitt.edu', @listID, -1)";
+            SqlCommand command = new SqlCommand(query, dbConnection);
+            command.Parameters.Add("@listID", SqlDbType.Int);
+            command.Parameters["@listID"].Value = payload;
+
+            try
             {
-		        Console.WriteLine(e.InnerException);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.InnerException);
             }
         }
     }

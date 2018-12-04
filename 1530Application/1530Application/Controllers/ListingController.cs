@@ -35,12 +35,30 @@ namespace _1530Application.Controllers
             dbcon.DownvoteListing(listID);
             return null;
         }
+        /**
+         * if (x == 0 && reader[x] != DBNull.Value)
+                        {
+                            result += reader[x];
+                        } else if (reader[x] != DBNull.Value)
+                        {
+                            result += "~" + reader[x];
+                        }
+                       // Debug.WriteLine(reader.GetName(x) + " : " + reader[x]);
+                    }
+                    
+                    result += "|";
+         **/
 
         public ActionResult GrabListings()
         {
             DbConnection1530 db = new DbConnection1530();
-            string listings = db.SearchMapListings();
-            string ser = JsonConvert.SerializeObject(listings);
+            List<MapListing> listings = db.SearchMapListings();
+            string combinedMapString = "";
+            foreach (MapListing item in listings)
+            {
+                combinedMapString += combinedMapString + String.Format("{0}~{1}~{2}~{3}~{4}|",item.Image, item.Xcord,item.YCord,item.Description,item.Upvotes);
+            }
+            string ser = JsonConvert.SerializeObject(combinedMapString);
             Debug.WriteLine(ser);
             return Content(ser);
         }

@@ -6,14 +6,14 @@ namespace _1530Application.HelperClasses
     [Serializable]
     public class MapListing
     {
-        private double Xcord { get; set; }
-        private double YCord { get; set; }
-        private string Description { get; set; }
-        private int Image { get; set; }
-        private int Upvotes { get; set; }
-        private int Downvotes { get; set; }
-        private string Creator { get; set; }
-        private string Tags { get; set; }
+        public double Xcord { get; set; }
+        public double YCord { get; set; }
+        public string Description { get; set; }
+        public int Image { get; set; }
+        public int Upvotes { get; set; }
+        public int Downvotes { get; set; }
+        public string Creator { get; set; }
+        public string Tags { get; set; }
 
         public MapListing(string id,
             string xcord,
