@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+
+using System.Diagnostics;
+
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Services;
 
 namespace _1530Application
 {
+    [Serializable]
     public class DbConnection1530
     {
         public SqlConnection dbConnection;
@@ -145,16 +149,6 @@ namespace _1530Application
 
         public string InsertMapListing(Dictionary<string, string> entries)
         {
-            Random rnd = new Random();
-            dbConnection.Open();
-            string query = String.Format("INSERT INTO dbo.MapListings ([listID],[Xcoord] ,[Ycoord] ,[description],[iType],[voteVal],[creator]) VALUES({0}, {1}, {2}, '{3}', '{4}', {5},'{6}')",
-                                            rnd.Next(0,int.MaxValue),
-                                            entries["Xcoord"],
-                                            entries["Ycoord"],
-                                            entries["Description"],
-                                            entries["Image"],
-                                            entries["Upvotes"],
-                                            entries["Creator"]);
             
             SqlCommand command = new SqlCommand("proc_addListing",dbConnection);
             command.CommandType = CommandType.StoredProcedure;
@@ -181,7 +175,6 @@ namespace _1530Application
         /// Return all Map Listings
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
         public List<MapListing> SearchMapListings()
         {
 
@@ -199,27 +192,43 @@ namespace _1530Application
             command.CommandType = CommandType.Text;
             //command.Parameters["@"].Value = payload.something; // TODO
             SqlDataReader reader = command.ExecuteReader();
-            List<MapListing> listings = new List<MapListing>();
+            string result = "";
             try
             {
-                Console.WriteLine("Below are all MapListings rows");
+                Debug.WriteLine("Below are all MapListings rows");
                 while (reader.Read())
                 {
-                    Console.WriteLine("*** New Row ***");
                     for (int x = 0; x < reader.FieldCount; x++)
                     {
-                        Console.WriteLine(reader.GetName(x) + " : " + reader[x]);
+                        if (x == 0 && reader[x] != DBNull.Value)
+                        {
+                            result += reader[x];
+                        } else if (reader[x] != DBNull.Value)
+                        {
+                            result += "~" + reader[x];
+                        }
+                       // Debug.WriteLine(reader.GetName(x) + " : " + reader[x]);
                     }
-                    listings.Add(new MapListing(reader));
+                    
+                    result += "|";
+                    //Debug.WriteLine("Writing next lising.");
                 }
             }
             catch (Exception e)
             {
+
+                Debug.WriteLine("Error in retrieving map listings : " + e);
+            }
+            dbConnection.Close();
+            // return results?
+            Debug.WriteLine(result);
+            return result;
                 Console.WriteLine("Error in retrieving map listings : " + e);
             }
             dbConnection.Close();
             // return results?
             return listings;
+
         }
 
         /// <summary>
@@ -339,3 +348,4 @@ namespace _1530Application
         }
     }
 }
+

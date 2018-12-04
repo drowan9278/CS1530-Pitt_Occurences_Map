@@ -44,73 +44,73 @@
 
             var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-            addListing("Construction:40.441548:-79.956469:Sennott Square CS1530:Three elevators are closed. It is reccommended to take the stairs.", map);
+            addListing("Test~40.441541~-79.956429~Testing Manually~1~10~0~Admin", map);
+            addListing("Test~40.443541~-79.959429~Testing Manually~1~10~0~Admin", map);
 
             $.ajax({
-                type: "POST",
-                uincrl: "@Url.Action("GrabListings","Listing")",
+                type: "post",
+                url: "@Url.Action("GrabListings","Listing")",
                 data: "{}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
+                dataType: "text",
                 success: function (result) {
-                    alert('Success!');
-                    alert(result);
-                    var arrayLength = result.length;
-                    for (var i = 0; i < arrayLength; i++) {
-                        addListing(result[i], map);
+                    var allListings = result.split("|");
+                    for (var i = 0; i < allListings.length; i++) {
+                        addListing(allListings[i], map);
                     }
                 },
                 failure: function (result) {
                     alert('Error loading listing data');
                 }
             });
-
             function onSuccess(result) {
                 alert('Success!');
                 var arrayLength = result.length;
                 for (var i = 0; i < arrayLength; i++) {
                     addListing(result[i], map);
                 }
-            }
-
-            function onError(result) {
-                alert('Error loading listing data');
-            }
+            });
 
 
         }
 
         function addListing(listing, map) {
-            var str = listing.split(":");
-            var myLatLng = { lat: parseFloat(str[1]), lng: parseFloat(str[2]) };
+                var str = listing.split("~");
+                var myLatLng = { lat: parseFloat(str[1]), lng: parseFloat(str[2]) };
+                
+                var contentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<h1 id="firstHeading" class="firstHeading">' + str[0] + '</h1>' +
+                    '<div id="bodyContent">' +
+                    '<p>' + str[3] + '</p>' +
+                    '<p>' + str[7] + '</p>' +
+                    '</div>';
 
-            var contentString = '<div id="content">' +
-                '<div id="siteNotice">' +
-                '</div>' +
-                '<h1 id="firstHeading" class="firstHeading">' + str[0] + '</h1>' +
-                '<div id="bodyContent">' +
-                '<p>' + str[3] + '</p>' +
-                '<p>' + str[4] + '</p>' +
-                '<button type="button" onclick="voteFunc(1,' + IDString +')">Relevant</button>' +
-                '<button type="button" onclick="voteFunc(-1,' + IDString + ')">Irrelevant</button>' +
-                '</div>';
 
-            var infowindow = new google.maps.InfoWindow({
-                content: contentString
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    draggable: false,
+                    title: str[0],
+                    tags: str[7],
+                    details: [3]
             });
 
-            marker = new google.maps.Marker({
-                position: myLatLng,
-                map: map,
-                draggable: false,
-                title: str[0],
-                tags: str[3],
-                details: [4]
-            });
+            console.log(myLatLng);
+            console.log(map);
+            console.log(str[0]);
+            console.log(str[7]);
+            console.log(str[3]);
 
-            marker.addListener('click', function () {
-                infowindow.open(map, marker);
-            });
+                marker.addListener('click', function () {
+                    infowindow.open(map, marker);
+                });
+
+            
         }
     </script>
     <script>

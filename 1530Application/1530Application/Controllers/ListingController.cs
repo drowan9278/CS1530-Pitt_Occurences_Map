@@ -1,9 +1,14 @@
+
 ﻿using _1530Application.HelperClasses;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
+
 
 namespace _1530Application.Controllers
 {
@@ -34,8 +39,10 @@ namespace _1530Application.Controllers
         public ActionResult GrabListings()
         {
             DbConnection1530 db = new DbConnection1530();
-            List<MapListing> listings = db.SearchMapListings();
-            return Json(listings);
+            string listings = db.SearchMapListings();
+            string ser = JsonConvert.SerializeObject(listings);
+            Debug.WriteLine(ser);
+            return Content(ser);
         }
 
 
@@ -63,3 +70,4 @@ namespace _1530Application.Controllers
         }
     }
 }
+
