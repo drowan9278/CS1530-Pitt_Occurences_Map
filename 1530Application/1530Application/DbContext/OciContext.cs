@@ -184,18 +184,12 @@ namespace _1530Application
         [HttpPost]
         public List<MapListing> SearchMapListings()
         {
-
-            SqlConnection dbConnection = new SqlConnection("user id=admin;" +
-                                       "password=oakland1530;server=oitdb.ccubo8pyjzvy.us-east-1.rds.amazonaws.com;" +
-                                       "Trusted_Connection=no;" +
-                                       "database=Oitdb; " +
-                                       "connection timeout=30");
             dbConnection.Open();
             string query = "SELECT * FROM dbo.MapListings;";  //TODO this
 
             SqlCommand command = new SqlCommand(query, dbConnection);
             //command.Parameters.Add("@", SqlDbType.String); // TODO
-            command.CommandTimeout = 15;
+            command.CommandTimeout = 100;
             command.CommandType = CommandType.Text;
             //command.Parameters["@"].Value = payload.something; // TODO
             SqlDataReader reader = command.ExecuteReader();
@@ -208,7 +202,7 @@ namespace _1530Application
                     Console.WriteLine("*** New Row ***");
                     for (int x = 0; x < reader.FieldCount; x++)
                     {
-                        Console.WriteLine(reader.GetName(x) + " : " + reader[x]);
+                        
                     }
                     listings.Add(new MapListing(reader));
                 }

@@ -9,7 +9,7 @@ namespace _1530Application.HelperClasses
         public double Xcord { get; set; }
         public double YCord { get; set; }
         public string Description { get; set; }
-        public int Image { get; set; }
+        public string Image { get; set; }
         public int Upvotes { get; set; }
         public int Downvotes { get; set; }
         public string Creator { get; set; }
@@ -28,7 +28,7 @@ namespace _1530Application.HelperClasses
             Xcord = double.Parse(xcord);
             YCord = double.Parse(ycord);
             Description = description;
-            Image = int.Parse(image);
+            Image = image;
             Upvotes = int.Parse(upvotes);
             Downvotes = int.Parse(downvotes);
             Creator = creator;
@@ -40,10 +40,10 @@ namespace _1530Application.HelperClasses
             Xcord = reader.GetDouble(1);
             YCord = reader.GetDouble(2);
             Description = reader.GetString(3);
-            Image = reader.GetInt32(4);
+            Image = reader.GetString(4);
             Upvotes = reader.GetInt32(5);
-            Downvotes = reader.GetInt32(6);
-            Creator = reader.GetString(7);
+            
+            Creator = reader.GetString(6);
             try
             {
                 Tags = reader.GetString(8);

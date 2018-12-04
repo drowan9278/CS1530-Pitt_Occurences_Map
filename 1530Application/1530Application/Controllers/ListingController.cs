@@ -56,7 +56,7 @@ namespace _1530Application.Controllers
             string combinedMapString = "";
             foreach (MapListing item in listings)
             {
-                combinedMapString += combinedMapString + String.Format("{0}~{1}~{2}~{3}~{4}|",item.Image, item.Xcord,item.YCord,item.Description,item.Upvotes);
+                combinedMapString = combinedMapString + String.Format("{0}~{1}~{2}~{3}~{4}|",item.Image, item.Xcord,item.YCord,item.Description,item.Upvotes);
             }
             string ser = JsonConvert.SerializeObject(combinedMapString);
             Debug.WriteLine(ser);
@@ -76,7 +76,7 @@ namespace _1530Application.Controllers
             entries["Xcoord"] = Lat;
             entries["Ycoord"] = Lng;
             entries["Description"] = Details;
-            entries["Image"] = "None";
+            entries["Image"] = Type;
             entries["Upvotes"] = "0";
             entries["Downvotes"] = "0";
             entries["Creator"] = "Anonymous@pitt.edu";
