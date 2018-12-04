@@ -20,7 +20,7 @@ namespace _1530Application.Controllers
             return View();
         }
 	
-	    [HttpPost]
+	[HttpPost]
         public ActionResult Upvote(int listID, int voteType)
         {
 	        DbConnection1530 dbcon = new DbConnection1530();
@@ -28,7 +28,7 @@ namespace _1530Application.Controllers
             return null;
         }
 	
-	    [HttpPost]
+	[HttpPost]
         public ActionResult Downvote(int listID, int voteType)
         {
 	        DbConnection1530 dbcon = new DbConnection1530();

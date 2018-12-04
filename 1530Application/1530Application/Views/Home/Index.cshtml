@@ -14,7 +14,7 @@
                 zoom: 17,
                 mapTypeId: google.maps.MapTypeId.HYBRID
             }
-
+            
             function voteFunc(upOrDown, listID){
                 if(upOrDown == 1){
                     $.ajax({
@@ -22,7 +22,7 @@
                         dataType: {}
                         url: "@Url.Action("Upvote","Listing")",
                         cache: false,
-                        data: {'listID': listID, 'voteType': upOrDown}
+                        data: {'listID': listID, 'voteType': upOrDown}      
                         success: function (msg) {
                             alert("Success");
                         }
@@ -34,7 +34,7 @@
                         dataType: {}
                         url: "@Url.Action("Upvote","Listing")",
                         cache: false,
-                        data: {'listID': listID, 'voteType': upOrDown}
+                        data: {'listID': listID, 'voteType': upOrDown}    
                         success: function (msg) {
                             alert("Success");
                         }
@@ -57,10 +57,10 @@
                     for (var i = 0; i < allListings.length; i++) {
                         addListing(allListings[i], map);
                     }
-                },
+                }, 
                 failure: function (result) {
                     alert('Error loading listing data');
-                }
+                } 
             });
             function onSuccess(result) {
                 alert('Success!');
@@ -113,16 +113,7 @@
             
         }
     </script>
-    <script>
-        function myMap() {
-            var mapOptions = {
-                center: new google.maps.LatLng(40.441548, -79.956469),
-                zoom: 17,
-                mapTypeId: google.maps.MapTypeId.HYBRID
-            }
-            var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        }
-    </script>
+
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDeD15Z4envmo17tRmHPSMNgZo70BiJuo&callback=myMap"></script>
 </div>
 
