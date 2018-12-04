@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web.Mvc;
 using System.Web.Services;
-
+//Dbcon
 namespace _1530Application
 {
     public class DbConnection1530
