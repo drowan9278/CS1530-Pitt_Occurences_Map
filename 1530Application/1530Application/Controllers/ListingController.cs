@@ -20,6 +20,7 @@ namespace _1530Application.Controllers
         {
 	        DbConnection1530 dbcon = new DbConnection1530();
             dbcon.UpvoteListing(listID);
+            return null;
         }
 	
 	[HttpPost]
@@ -27,6 +28,7 @@ namespace _1530Application.Controllers
         {
 	        DbConnection1530 dbcon = new DbConnection1530();
             dbcon.DownvoteListing(listID);
+            return null;
         }
 
         public ActionResult GrabListings()
@@ -43,8 +45,8 @@ namespace _1530Application.Controllers
             Dictionary<string, string> entries = new Dictionary<string, string>();
             if(Lat.Equals(""))
             {
-                Lat = "1111";
-                Lng = "1111";
+                Lat = "45";
+                Lng = "-75";
             }
             entries["Xcoord"] = Lat;
             entries["Ycoord"] = Lng;
