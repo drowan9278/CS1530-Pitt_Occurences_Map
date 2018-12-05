@@ -42,7 +42,7 @@ namespace _1530Application.HelperClasses
             Description = reader.GetString(3);
             Image = reader.GetString(4);
             Upvotes = reader.GetInt32(5);
-            
+
             Creator = reader.GetString(6);
             try
             {

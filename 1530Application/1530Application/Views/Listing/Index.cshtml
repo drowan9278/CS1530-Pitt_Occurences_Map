@@ -1,4 +1,3 @@
-
 {
 @ViewBag.Title = "Oakland Inconvenience Tracker";
 }
@@ -23,7 +22,6 @@
         <input type="radio" id="radBut" name="i-type" value="pothole"> Pothole<br>
         <input type="radio" id="radBut" name="i-type" value="special event"> Special Event<br>
         <input type="radio" id="radBut" name="i-type" value="other"> Other
-
         </br>
 
         <div id="map" align="center" style="width:700px;height:500px;margin-top:25px"></div>
@@ -38,11 +36,10 @@
                 var map = new google.maps.Map(document.getElementById("map"), mapOptions);
             }
         </script>
-        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDeD15Z4envmo17tRmHPSMNgZo70BiJuo&callBack=myMap"></script>
+        <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByDz33FOlG2ZO5kS9isfdnZ1ljYrpq4ZM&callBack=myMap"></script>
 
         <input type="text" id="lat" readonly="yes">
         <input type="text" id="lng" readonly="yes">
-
         </br>
         <h3>Affected Tags</h3>
         <select multiple id="tagPill" style="width:300px">
@@ -59,11 +56,9 @@
             <option value="sennott">Sennott Square</option>
             <option value="thackery">Thackery</option>
         </select>
-
         </br>
         <h3>Detailed Description</h3>
         <textarea rows="4" cols="50" id="details"></textarea>
-
         </br>
         <img id="compare" />
         <h3>Image Upload</h3>
@@ -130,7 +125,9 @@
 				success: function (msg) {
 					alert("ALERT");
 				}
-			});
+            });
+            alert("Thank you, Your entry has been submitted");
+            location.reload();
 			//saveText(JSON.stringify(obj), "filename.json" );
 		}
 
@@ -143,7 +140,6 @@
 		  var dataURL = canvas.toDataURL("image/png");
 		  return dataURL;//.replace(/^data:image\/(png|jpg);base64,/, "");
 		}
-
         </script>
         </br></br>
         <input type="button" onclick="gatherInfo()" value="Sumbit Inconvenience" name="submit">
@@ -159,4 +155,3 @@
         }
     </script>
 </body>
-

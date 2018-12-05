@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Services;
-using System.Web.SessionState;
 
 namespace _1530Application
 {
@@ -143,9 +140,7 @@ namespace _1530Application
                     if (string.Equals(readEmail.Trim(), searchEmail) && string.Equals(readPassword.Trim(), searchPassword))
                     {
                         return true;
-
                     }
-
                 }
             }
             catch (Exception e)
@@ -153,7 +148,6 @@ namespace _1530Application
                 dbConnection.Close();
                 return false;
             }
-
 
             dbConnection.Close();
             return false;
@@ -190,7 +184,6 @@ namespace _1530Application
             }
             dbConnection.Close();
             return null;
-
         }
 
         /// <summary>
@@ -218,7 +211,6 @@ namespace _1530Application
                     Console.WriteLine("*** New Row ***");
                     for (int x = 0; x < reader.FieldCount; x++)
                     {
-                        
                     }
                     listings.Add(new MapListing(reader));
                 }

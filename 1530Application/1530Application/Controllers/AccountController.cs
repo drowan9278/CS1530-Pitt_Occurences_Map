@@ -2,16 +2,12 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Host.SystemWeb;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Threading.Tasks;
 using System.Web;
-using System.Web.SessionState;
 using System.Web.Mvc;
-using _1530Application;
-using System.Collections.Generic;
 
 namespace _1530Application.Controllers
 {
@@ -60,12 +56,9 @@ namespace _1530Application.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
-
-
 
         //
         // POST: /Account/Login
@@ -84,7 +77,7 @@ namespace _1530Application.Controllers
             //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
             Dictionary<string, string> userSearch = new Dictionary<string, string>();
-            userSearch.Add("email",model.Email);
+            userSearch.Add("email", model.Email);
             userSearch.Add("password", model.Password);
 
             DbConnection1530 dbconn = new DbConnection1530();
@@ -97,7 +90,8 @@ namespace _1530Application.Controllers
             {
                 session["LoggedIn"] = "true";
                 return RedirectToLocal(returnUrl);
-            } else
+            }
+            else
             {
                 ModelState.AddModelError("", "Invalid login attempt.");
             }
@@ -160,7 +154,6 @@ namespace _1530Application.Controllers
             session["LoggedIn"] = true;
             System.Diagnostics.Debug.WriteLine("loggedin?!!" + session["LoggedIn"]);
 
-
             return View();
         }
 
@@ -184,7 +177,6 @@ namespace _1530Application.Controllers
 
                 if (result.Succeeded)
                 {
-
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
@@ -192,9 +184,9 @@ namespace _1530Application.Controllers
                     System.Diagnostics.Debug.WriteLine("what up tryubg to send email");
 
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                     
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
