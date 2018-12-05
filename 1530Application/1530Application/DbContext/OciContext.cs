@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Services;
+using System.Web.SessionState;
 
 namespace _1530Application
 {
@@ -120,27 +122,41 @@ namespace _1530Application
         /// Dictonary of query paramters to query based on
         /// </param>
         /// <returns></returns>
-        public string SearchUser(Dictionary<string, string> payload)
+        public Boolean SearchUser(Dictionary<string, string> payload)
         {
-            string query = "SELECT * FROM dbo.Users WHERE " +
-                string.Join(",", payload.Select(kv => kv.Key + "=" + kv.Value).ToArray()) + ";";
+            string query = "SELECT * FROM dbo.Users";
+            dbConnection.Open();
 
+            string searchEmail = payload["email"];
+            string searchPassword = payload["password"];
             SqlCommand command = new SqlCommand(query, dbConnection);
-            //command.Parameters.Add("@email", SqlDbType.String);
-
-            //command.Parameters["@email"].Value = payload.something;
             SqlDataReader reader = command.ExecuteReader();
             try
             {
                 while (reader.Read())
                 {
-                    // do something
+                    System.Diagnostics.Debug.WriteLine("What the heck!11111111111!!!");
+
+                    string readEmail = (string)reader["email"];
+                    string readPassword = (string)reader["password"];
+
+                    if (string.Equals(readEmail.Trim(), searchEmail) && string.Equals(readPassword.Trim(), searchPassword))
+                    {
+                        return true;
+
+                    }
+
                 }
             }
             catch (Exception e)
             {
+                dbConnection.Close();
+                return false;
             }
-            return null;
+
+
+            dbConnection.Close();
+            return false;
         }
 
         public string InsertMapListing(Dictionary<string, string> entries)
