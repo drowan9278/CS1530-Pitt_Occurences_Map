@@ -171,6 +171,8 @@
                     '<div id="bodyContent">' +
                     '<p>' + str[3] + '</p>' +
                     '<p>' + str[4] + '</p>' +
+                    '<button type="button" onclick="voteFunc(1, listID)">Relevant</button>' +
+<                   'button type="button" onclick="voteFunc(-1, listID)">Irrelevant</button>' +
                     '</div>';
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
