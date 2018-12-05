@@ -56,7 +56,13 @@ namespace _1530Application.Controllers
             string combinedMapString = "";
             foreach (MapListing item in listings)
             {
-                combinedMapString = combinedMapString + String.Format("{0}~{1}~{2}~{3}~{4}|",item.Image, item.Xcord,item.YCord,item.Description,item.Upvotes);
+                combinedMapString = combinedMapString + 
+                    String.Format("{0}~{1}~{2}~{3}~{4}|",
+                    item.Image,
+                    item.Xcord,
+                    item.YCord,
+                    item.Description,
+                    item.Upvotes);
             }
             string ser = JsonConvert.SerializeObject(combinedMapString);
             Debug.WriteLine(ser);
