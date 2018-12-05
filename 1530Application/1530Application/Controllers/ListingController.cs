@@ -17,10 +17,24 @@ namespace _1530Application.Controllers
         // GET: Listing
         public ActionResult Index()
         {
-            return View();
+            System.Diagnostics.Debug.WriteLine("found?!! here we are");
+            HttpSessionStateBase session = Session;
+            System.Diagnostics.Debug.WriteLine("session logged in??" + session["LoggedIn"] == null);
+            Boolean loggedIn = true;
+            if (session["LoggedIn"] == null)
+            {
+                loggedIn = false;
+                System.Diagnostics.Debug.WriteLine("itsfalse lol");
+            }
+            if (loggedIn)
+            {
+                return View();
+            }
+            return View("Error");
+
         }
-	
-	[HttpPost]
+
+        [HttpPost]
         public ActionResult Upvote(int listID, int voteType)
         {
 	        DbConnection1530 dbcon = new DbConnection1530();

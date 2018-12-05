@@ -2,10 +2,16 @@
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Microsoft.Owin.Host.SystemWeb;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Threading.Tasks;
 using System.Web;
+using System.Web.SessionState;
 using System.Web.Mvc;
+using _1530Application;
+using System.Collections.Generic;
 
 namespace _1530Application.Controllers
 {
@@ -54,9 +60,12 @@ namespace _1530Application.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
+
 
         //
         // POST: /Account/Login
@@ -72,23 +81,28 @@ namespace _1530Application.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            switch (result)
+            //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+
+            Dictionary<string, string> userSearch = new Dictionary<string, string>();
+            userSearch.Add("email",model.Email);
+            userSearch.Add("password", model.Password);
+
+            DbConnection1530 dbconn = new DbConnection1530();
+            Boolean found = dbconn.SearchUser(userSearch);
+            System.Diagnostics.Debug.WriteLine("found?!!" + found);
+
+            HttpSessionStateBase session = Session;
+            System.Diagnostics.Debug.WriteLine("loggedin?!!" + session["LoggedIn"]);
+            if (found)
             {
-                case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
-
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                session["LoggedIn"] = "true";
+                return RedirectToLocal(returnUrl);
+            } else
+            {
+                ModelState.AddModelError("", "Invalid login attempt.");
             }
+
+            return View(model);
         }
 
         //
@@ -141,6 +155,12 @@ namespace _1530Application.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            System.Diagnostics.Debug.WriteLine("opening!!");
+            HttpSessionStateBase session = Session;
+            session["LoggedIn"] = true;
+            System.Diagnostics.Debug.WriteLine("loggedin?!!" + session["LoggedIn"]);
+
+
             return View();
         }
 
@@ -151,20 +171,30 @@ namespace _1530Application.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            System.Diagnostics.Debug.WriteLine("heyeyeyrey");
             if (ModelState.IsValid)
             {
+                System.Diagnostics.Debug.WriteLine("wut");
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                System.Diagnostics.Debug.WriteLine("the user???" + user);
+                System.Diagnostics.Debug.WriteLine("the meial???" + model.Email);
+
                 var result = await UserManager.CreateAsync(user, model.Password);
+                System.Diagnostics.Debug.WriteLine("the result???", result);
+
                 if (result.Succeeded)
                 {
+
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    System.Diagnostics.Debug.WriteLine("what up tryubg to send email");
 
+                    string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                     
                     return RedirectToAction("Index", "Home");
                 }
                 AddErrors(result);
